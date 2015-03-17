@@ -11,6 +11,6 @@ fn jumphash_hash(b: &mut Bencher) {
     let key = &"woo hoo";
 
     b.iter(|| {
-        hash(key, 100)
+        hash(key, 0..100)
     })
 }
