@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["hash",""]]});
+initSidebarItems({"fn":[["select","Returns the bucket for the given key and set of buckets."]]});
