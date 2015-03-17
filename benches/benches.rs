@@ -3,14 +3,21 @@
 extern crate jumphash;
 extern crate test;
 
-use jumphash::hash;
+use std::collections::BTreeSet;
+use jumphash::select;
 use test::Bencher;
 
 #[bench]
-fn jumphash_hash(b: &mut Bencher) {
-    let key = &"woo hoo";
+fn jumphash_select(b: &mut Bencher) {
+    let key = "woo hoo";
+
+    let mut buckets = BTreeSet::new();
+    buckets.insert("zero");
+    buckets.insert("one");
+    buckets.insert("two");
+    buckets.insert("three");
 
     b.iter(|| {
-        hash(key, 0..100)
+        select(&key, &buckets)
     })
 }
