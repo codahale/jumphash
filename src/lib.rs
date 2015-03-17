@@ -3,15 +3,15 @@
 
 #![feature(core,hash)]
 
-use std::collections::BTreeSet;
 use std::hash::{Hash, Hasher, SipHasher};
+use std::ops::Range;
 
-/// Returns the bucket for the given key and set of buckets.
+/// Computes the bucket for the given key and given range of buckets.
 ///
 /// # Panics
 //
-/// * `select` will panic if the set of buckets is empty.
-pub fn select<'a, T: Hash, E: Ord>(key: &T, buckets: &'a BTreeSet<E>) -> &'a E {
+/// * `hash` will panic if the range of buckets is empty.
+pub fn hash<T: Hash>(key: &T, buckets: Range<u32>) -> u32 {
     assert!(buckets.len() >= 1);
 
     let mut hasher = SipHasher::new();
@@ -28,29 +28,16 @@ pub fn select<'a, T: Hash, E: Ord>(key: &T, buckets: &'a BTreeSet<E>) -> &'a E {
              * ((1i64 << 31) as f64)
              / (((h >> 33).wrapping_add(1)) as f64)) as i64;
     }
-
-    buckets.iter().skip(b as usize).next().unwrap()
+    b as u32 + buckets.start
 }
 
 #[cfg(test)]
 mod test {
-    use std::collections::BTreeSet;
     use super::*;
 
     #[test]
     fn jumping() {
-        let mut buckets = BTreeSet::new();
-        buckets.insert("zero");
-        buckets.insert("one");
-        buckets.insert("two");
-        buckets.insert("three");
-
-        let before: Vec<&str> = (0..5).map(|i| select(&i, &buckets)).cloned().collect();
-        assert_eq!(before, vec!["one", "three", "zero", "zero", "three"]);
-
-        buckets.remove(&"zero");
-
-        let after: Vec<&str> = (0..5).map(|i| select(&i, &buckets)).cloned().collect();
-        assert_eq!(after, vec!["one", "three", "one", "three", "three"]);
+        let idx = hash(&"woo", 0..100);
+        assert_eq!(idx, 79);
     }
 }
