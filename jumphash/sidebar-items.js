@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["hash","Computes the bucket for the given key and given range of buckets."]]});
+initSidebarItems({"fn":[["hash","Computes the bucket for the given key. The result will be in the range `[0,buckets)`."]]});
