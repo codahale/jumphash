@@ -1,8 +1,6 @@
 //! An implementation of the [Jump Consistent Hash](http://arxiv.org/abs/1406.2294) algorithm by
 //! Lamping & Veach.
 
-#![feature(core,hash)]
-
 use std::hash::{Hash, Hasher, SipHasher};
 
 /// Computes the bucket for the given key. The result will be in the range `[0,buckets)`.
