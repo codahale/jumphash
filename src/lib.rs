@@ -21,9 +21,8 @@ pub fn hash<T: Hash>(key: &T, buckets: u32) -> u32 {
     while j < (buckets as i64) {
         b = j;
         h = h.wrapping_mul(2862933555777941757).wrapping_add(1);
-        j = (((b.wrapping_add(1)) as f64)
-             * ((1i64 << 31) as f64)
-             / (((h >> 33).wrapping_add(1)) as f64)) as i64;
+        j = (((b.wrapping_add(1)) as f64) * ((1i64 << 31) as f64) /
+             (((h >> 33).wrapping_add(1)) as f64)) as i64;
     }
     b as u32
 }
